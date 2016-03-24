@@ -46,32 +46,11 @@ if ($redis) {
             $d = &$d[$key[$i]];
         }
 
-        // Get the number of items in the key.
-        $len = -1;
-
-        if (!isset($config['faster']) || !$config['faster']) {
-            switch ($redis->type($full_key)) {
-                case Redis::REDIS_HASH:
-                    $len = $redis->hLen($full_key);
-                    break;
-
-                case Redis::REDIS_LIST:
-                    $len = $redis->lLen($full_key);
-                    break;
-
-                case Redis::REDIS_SET:
-                    $len = $redis->sCard($full_key);
-                    break;
-
-                case Redis::REDIS_ZSET:
-                    $len = $redis->zCard($full_key);
-                    break;
-            }
-        }
-
         // Nodes containing an item named __phpredisadmin__ are also a key, not just a directory.
         // This means that creating an actual key named __phpredisadmin__ will make this bug.
-        $d[$key[count($key) - 1]] = $len;
+        if (is_array($d)) {
+            array_push($d, $key[count($key) - 1]);
+        }
 
         // Unset $d so we don't accidentally overwrite it somewhere else.
         unset($d);
