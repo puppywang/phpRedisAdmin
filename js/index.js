@@ -88,20 +88,10 @@ $(function () {
                     if (data instanceof Object) {
                         for (var key in data) {
                             if (data.hasOwnProperty(key)) {
-                                if (data[key] instanceof Array) {
+                                if (typeof data[key] == 'number') {
                                     var arr_data = {};
-                                    arr_data['name'] = key;
-                                    if ($.QueryString['key'].indexOf(parent_key + key) == 0) {
-                                        arr_data['open'] = true;
-                                    }
-                                    arr_data['children'] = [];
-                                    var data_key_len = data[key].length;
-                                    for (var i = 0; i < data_key_len; i++) {
-                                        var arr_child_data = {};
-                                        arr_child_data['name'] = data[key][i];
-                                        arr_child_data['url'] = '/?view&s=' + $.QueryString['s'] + '&d=' + $.QueryString['d'] + '&key=' + parent_key + key + ':' + data[key][i];
-                                        arr_data['children'].push(arr_child_data);
-                                    }
+                                    arr_data['name'] = key + (data[key] != -1 ? '[' + data[key] + ']' : '');
+                                    arr_data['url'] = '/?view&s=' + $.QueryString['s'] + '&d=' + $.QueryString['d'] + '&key=' + parent_key + key;
                                     out_data.push(arr_data);
                                 } else if (data[key] instanceof Object) {
                                     var obj_data = {};
