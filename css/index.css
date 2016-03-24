@@ -21,7 +21,7 @@ text-decoration: none;
 text-decoration: underline;
 }
 
-
+/*
 #keys {
 position: absolute;
 top: 18.5em;
@@ -83,7 +83,7 @@ background-image: url(../images/tree-folder-expanded.gif);
 background-image: url(../images/tree-folder-collapsed.gif);
 }
 
-#keys ul ul li.last { /* Hard-coded substitute for :last-child */
+#keys ul ul li.last {  Hard-coded substitute for :last-child
 margin-bottom: .3em;
 background: #fff url(../images/tree-lastnode.gif) no-repeat;
 }
@@ -103,7 +103,7 @@ display: none;
 #keys .icon:hover .deltree {
 display: inline;
 }
-
+*/
 #resize {
 position: fixed;
 top: 0;

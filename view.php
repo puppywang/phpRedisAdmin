@@ -61,13 +61,13 @@ try {
 
 
 switch ($type) {
-  case 'string':
+  case Redis::REDIS_STRING:
     $value = $redis->get($_GET['key']);
     $value = encodeOrDecode('load', $_GET['key'], $value);
     $size  = strlen($value);
     break;
 
-  case 'hash':
+  case Redis::REDIS_HASH:
     $values = $redis->hGetAll($_GET['key']);
     foreach ($values as $k => $value) {
       $values[$k] = encodeOrDecode('load', $_GET['key'], $value);
@@ -76,11 +76,11 @@ switch ($type) {
     ksort($values);
     break;
 
-  case 'list':
+  case Redis::REDIS_LIST:
     $size = $redis->lLen($_GET['key']);
     break;
 
-  case 'set':
+  case Redis::REDIS_SET:
     $values = $redis->sMembers($_GET['key']);
     foreach ($values as $k => $value) {
       $values[$k] = encodeOrDecode('load', $_GET['key'], $value);
@@ -89,7 +89,7 @@ switch ($type) {
     sort($values);
     break;
 
-  case 'zset':
+  case Redis::REDIS_ZSET:
     $values = $redis->zRange($_GET['key'], 0, -1);
     foreach ($values as $k => $value) {
       $values[$k] = encodeOrDecode('load', $_GET['key'], $value);
@@ -122,7 +122,7 @@ if (isset($values) && ($count_elements_page !== false)) {
 
 
 // Build pagination div.
-if (($count_elements_page !== false) && in_array($type, array('hash', 'list', 'set', 'zset')) && ($size > $count_elements_page)) {
+if (($count_elements_page !== false) && in_array($type, array(Redis::REDIS_HASH, Redis::REDIS_LIST, Redis::REDIS_SET, Redis::REDIS_ZSET)) && ($size > $count_elements_page)) {
     $prev       = $page_num_request - 1;
     $next       = $page_num_request + 1;
     $lastpage   = ceil($size / $count_elements_page);
@@ -181,7 +181,7 @@ if (isset($pagination)) {
 
 
 // String
-if ($type == 'string') { ?>
+if ($type == Redis::REDIS_STRING) { ?>
 
 <table>
 <tr><td><div class=data><?php echo format_html($value)?></div></td><td><div>
@@ -196,7 +196,7 @@ if ($type == 'string') { ?>
 
 
 // Hash
-else if ($type == 'hash') { ?>
+else if ($type == Redis::REDIS_HASH) { ?>
 
 <table>
 <tr><th><div>Key</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
@@ -213,7 +213,7 @@ else if ($type == 'hash') { ?>
 
 
 // List
-else if ($type == 'list') { ?>
+else if ($type == Redis::REDIS_LIST) { ?>
 
 <table>
 <tr><th><div>Index</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
@@ -243,7 +243,7 @@ else if ($type == 'list') { ?>
 
 
 // Set
-else if ($type == 'set') {
+else if ($type == Redis::REDIS_SET) {
 
 ?>
 <table>
@@ -264,7 +264,7 @@ else if ($type == 'set') {
 
 
 // ZSet
-else if ($type == 'zset') { ?>
+else if ($type == Redis::REDIS_ZSET) { ?>
 
 <table>
 <tr><th><div>Score</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
@@ -281,7 +281,7 @@ else if ($type == 'zset') { ?>
 
 <?php }
 
-if ($type != 'string') { ?>
+if ($type != Redis::REDIS_STRING) { ?>
   </table>
 
   <p>
