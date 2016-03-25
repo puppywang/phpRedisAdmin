@@ -117,7 +117,7 @@ $(function () {
                     }
                     return out_data;
                 };
-
+                $("div.loading").remove();
                 $.fn.zTree.init($("#keys"), setting, convertZTreeData(JSON.parse(data), ''));
             } catch(e) {
                 alert(e.toString());

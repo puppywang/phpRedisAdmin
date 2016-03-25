@@ -48,9 +48,6 @@ if ($redis) {
 
         // Nodes containing an item named __phpredisadmin__ are also a key, not just a directory.
         // This means that creating an actual key named __phpredisadmin__ will make this bug.
-        if (!is_array($d)) {
-            $d = array();
-        }
         array_push($d, $key[count($key) - 1]);
 
         // Unset $d so we don't accidentally overwrite it somewhere else.

@@ -92,9 +92,7 @@ require 'includes/header.inc.php';
     </p>
 
     <div id="keys" class="ztree">
-<!--        <ul>-->
-<!--            --><?php //print_namespace($namespaces, 'Keys', '', empty($namespaces), 0) ?>
-<!--        </ul>-->
+        <div class="loading"></div><i></i>Loading...</div>
     </div>
     <!-- #keys -->
 
