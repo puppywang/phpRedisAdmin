@@ -46,9 +46,9 @@ if ($redis) {
             $d = &$d[$key[$i]];
         }
 
-        // Nodes containing an item named __phpredisadmin__ are also a key, not just a directory.
-        // This means that creating an actual key named __phpredisadmin__ will make this bug.
-        array_push($d, $key[count($key) - 1]);
+        // Nodes containing an item named \n are also a key, not just a directory.
+        // This means that creating an actual key named \n will make this bug.
+        $d["\n"][] = $key[count($key) - 1];
 
         // Unset $d so we don't accidentally overwrite it somewhere else.
         unset($d);
