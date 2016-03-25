@@ -92,7 +92,7 @@ require 'includes/header.inc.php';
     </p>
 
     <div id="keys" class="ztree">
-        <div class="loading"></div><i></i>Loading...</div>
+        <div class="loading"><i></i>Loading...</div>
     </div>
     <!-- #keys -->
 
