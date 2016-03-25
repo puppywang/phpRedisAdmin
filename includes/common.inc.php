@@ -14,6 +14,10 @@ if (isset($config['login'])) {
     require_once PHPREDIS_ADMIN_PATH . '/includes/login.inc.php';
 }
 
+if (isset($config['signon'])) {
+    require_once PHPREDIS_ADMIN_PATH . '/includes/signon.inc.php';
+}
+
 if (isset($login['servers'])) {
     $i = current($login['servers']);
 } else {

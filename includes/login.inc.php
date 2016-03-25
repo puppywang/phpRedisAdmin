@@ -59,5 +59,3 @@ if ($data['response'] != $response) {
     header('WWW-Authenticate: Digest realm="' . $realm . '",qop="auth",nonce="' . uniqid() . '",opaque="' . $opaque . '"');
     die('Invalid username and/or password combination.');
 }
-
-?>
