@@ -22,6 +22,7 @@ $page['css'][] = 'zTreeStyle';
 $page['js'][] = 'index';
 $page['js'][] = 'jquery-cookie';
 $page['js'][] = 'jquery.ztree.core.min';
+$page['js'][] = 'jquery.ztree.exedit.min';
 
 require 'includes/header.inc.php';
 

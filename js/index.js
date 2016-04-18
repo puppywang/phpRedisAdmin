@@ -78,6 +78,39 @@ $(function () {
                         $('#iframe').attr('src', href);
                     }
                 }
+            },
+            view: {
+                addHoverDom: function(tree_id, tree_node) {
+                    if (tree_node.url && tree_node.url.indexOf('/?') != -1) return;
+                    var tree_anchor = $("#" + tree_node.tId + "_a");
+                    if ($("#deltree_" + tree_node.tId).length > 0) return;
+                    var del_tree_btn_str = "<span id='deltree_space_" + tree_node.tId + "' >&nbsp;</span><a class='deltree' id='deltree_" + tree_node.tId + "' href='delete.php?s=" + $.QueryString['s'] + "&d=" + $.QueryString['d'] + "&tree=" + tree_node.key + ":'><img src='images/delete.png' width='10' height='10' title='Delete tree' alt='[X]'></a>";
+                    tree_anchor.append(del_tree_btn_str);
+                    var deltree = $("#deltree_" + tree_node.tId);
+                    if (deltree) {
+                        deltree.bind("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: this.href,
+                                    data: 'post=1',
+                                    success: function (url) {
+                                        top.location.href = top.location.pathname + url;
+                                    }
+                                });
+                            }
+
+                            return true;
+                        });
+                    }
+                },
+                removeHoverDom: function(tree_id, tree_node) {
+                    $("#deltree_" + tree_node.tId).unbind().remove();
+                    $("#deltree_space_" + tree_node.tId).unbind().remove();
+                }
             }
         };
         $(document).ready(function() {
@@ -99,10 +132,11 @@ $(function () {
                                 } else if (data[key] instanceof Object) {
                                     var obj_data = {};
                                     obj_data['name'] = key;
-                                    if ($.QueryString['key'].indexOf(parent_key + key) == 0) {
+                                    obj_data['key'] = parent_key + key;
+                                    if ($.QueryString['key'].indexOf(obj_data['key']) == 0) {
                                         obj_data['open'] = true;
                                     }
-                                    obj_data['children'] = convertZTreeData(data[key], parent_key + key);
+                                    obj_data['children'] = convertZTreeData(data[key], obj_data['key']);
                                     out_data.push(obj_data);
                                 }
                             }
@@ -118,26 +152,6 @@ $(function () {
         });
     });
 
-    $('li.current').parents('li.folder').removeClass('collapsed');
-/*
-    $('li.folder').click(function (e) {
-        var t = $(this);
-
-        if ((e.pageY >= t.offset().top) &&
-            (e.pageY <= t.offset().top + t.children('div').height())) {
-            e.stopPropagation();
-            t.toggleClass('collapsed');
-        }
-    });
-
-    $('a').click(function () {
-        $('li.current').removeClass('current');
-    });
-
-    $('li a').click(function () {
-        $(this).parent().addClass('current');
-    });
- */
     $('#btn_server_filter').click(function () {
         var filter = $('#server_filter').val();
         location.href = top.location.pathname + '?overview&s=' + $('#server').val() + '&d=' + ($('#database').val() || '') + '&filter=' + filter;
@@ -175,22 +189,6 @@ $(function () {
             }
         });
     });
-
-    $('.deltree').click(function (e) {
-        e.preventDefault();
-
-        if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
-            $.ajax({
-                type: "POST",
-                url: this.href,
-                data: 'post=1',
-                success: function (url) {
-                    top.location.href = top.location.pathname + url;
-                }
-            });
-        }
-    });
-
 
     var isResizing = false;
     var lastDownX = 0;
