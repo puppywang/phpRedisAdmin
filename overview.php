@@ -43,7 +43,8 @@ foreach ($config['servers'] as $i => $server) {
         }
         if (!isset($info[$i]['Memory'])) {
             $info[$i]['Memory'] = array(
-                'used_memory' => $info[$i]['used_memory']
+                'used_memory' => $info[$i]['used_memory'],
+                'peak_used_memory' => $info[$i]['used_memory_peak']
             );
         }
     }
@@ -98,6 +99,15 @@ require 'includes/header.inc.php';
 
                 <tr>
                     <td>
+                        <div>Peak Memory used:</div>
+                    </td>
+                    <td>
+                        <div><?php echo format_size($info[$i]['Memory']['peak_used_memory']) ?></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
                         <div>Uptime:</div>
                     </td>
                     <td>
@@ -110,8 +120,8 @@ require 'includes/header.inc.php';
                         <div>Last save:</div>
                     </td>
                     <td>
-                        <div><?php if (isset($info[$i]['Persistence']['rdb_last_save_time'])) {
-                                echo format_ago(time() - $info[$i]['Persistence']['rdb_last_save_time'], true);
+                        <div><?php if (isset($info[$i]['rdb_last_save_time'])) {
+                                echo format_ago(time() - $info[$i]['rdb_last_save_time'], true);
                             } else {
                                 echo 'never';
                             } ?> <a href="save.php?s=<?php echo $i ?>"><img src="images/save.png" width="16" height="16"
