@@ -11,31 +11,31 @@ function export_redis($key) {
 
 
     // String
-    if ($type == 'string') {
+    if ($type == Redis::REDIS_STRING) {
         echo 'SET "', addslashes($key), '" "', addslashes($redis->get($key)), '"', PHP_EOL;
     } // Hash
-    else if ($type == 'hash') {
+    else if ($type == Redis::REDIS_HASH) {
         $values = $redis->hGetAll($key);
 
         foreach ($values as $k => $v) {
             echo 'HSET "', addslashes($key), '" "', addslashes($k), '" "', addslashes($v), '"', PHP_EOL;
         }
     } // List
-    else if ($type == 'list') {
+    else if ($type == Redis::REDIS_LIST) {
         $size = $redis->lLen($key);
 
         for ($i = 0; $i < $size; ++$i) {
             echo 'RPUSH "', addslashes($key), '" "', addslashes($redis->lIndex($key, $i)), '"', PHP_EOL;
         }
     } // Set
-    else if ($type == 'set') {
+    else if ($type == Redis::REDIS_SET) {
         $values = $redis->sMembers($key);
 
         foreach ($values as $v) {
             echo 'SADD "', addslashes($key), '" "', addslashes($v), '"', PHP_EOL;
         }
     } // ZSet
-    else if ($type == 'zset') {
+    else if ($type == Redis::REDIS_ZSET) {
         $values = $redis->zRange($key, 0, -1);
 
         foreach ($values as $v) {
@@ -55,13 +55,13 @@ function export_json($key) {
 
 
     // String
-    if ($type == 'string') {
+    if ($type == Redis::REDIS_STRING) {
         $value = $redis->get($key);
     } // Hash
-    else if ($type == 'hash') {
+    else if ($type == Redis::REDIS_HASH) {
         $value = $redis->hGetAll($key);
     } // List
-    else if ($type == 'list') {
+    else if ($type == Redis::REDIS_LIST) {
         $size = $redis->lLen($key);
         $value = array();
 
@@ -69,10 +69,10 @@ function export_json($key) {
             $value[] = $redis->lIndex($key, $i);
         }
     } // Set
-    else if ($type == 'set') {
+    else if ($type == Redis::REDIS_SET) {
         $value = $redis->sMembers($key);
     } // ZSet
-    else if ($type == 'zset') {
+    else if ($type == REDIS::REDIS_ZSET) {
         $value = $redis->zRange($key, 0, -1);
     }
 
